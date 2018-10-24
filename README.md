@@ -47,7 +47,7 @@ $ npm install -g yo@2.0.5
 #### Hyperledger Fabric
 The suggested installation directory is `~/fabric-dev-servers`. If you agree, Fabric can be installed by just running a few commands that will download it into the specified directory.
 
-##### Instalation
+##### Installation
 
 ```
 $ mkdir -p ~/fabric-dev-servers
