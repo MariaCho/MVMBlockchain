@@ -37,6 +37,15 @@ asset ActivoDeclaracionReactor identified by idDeclaracionReactor {
   o DeclaracionReactor declaracionReactor
 }
 
+asset ActivoDeclaracionUnidadesDeGeneracion identified by idDeclaracionUnidadesDeGeneracion {
+  o String idDeclaracionUnidadesDeGeneracion
+  o DeclaracionUnidadesDeGeneracion declaracionUnidadesDeGeneracion
+}
+
+asset ActivoDeclaracionSvc identified by idDeclaracionSvc {
+  o String idDeclaracionSvc
+  o DeclaracionSvc declaracionSvc
+}
 
 //////////// Conceptos ////////////
 
@@ -64,6 +73,11 @@ concept Devanado {
   o Integer reactanciaTierra      // %
 }
 
+concept Banda {
+  o Integer inicio
+  o Integer fin
+}
+
 // Informacion general
 
 concept Linea {
@@ -85,6 +99,17 @@ concept Condensador {
 }
 
 concept Reactor {
+  o String nombre
+  o Barra barra
+}
+
+concept UnidadDeGeneracion {
+  o String nombrePlanta
+  o String nombreUnidad
+  o Barra barra
+}
+
+concept Svc {
   o String nombre
   o Barra barra
 }
@@ -135,7 +160,7 @@ concept DeclaracionCondensador {
 }
 
 concept DeclaracionReactor {
-  o Reactor reactor // 1, 2
+  o Reactor reactor            // 1, 2
   o Integer capacidadNominal   // 3 - MVAR
   o Integer tensionNominal     // 4 - kV
   o String conexion            // 5
@@ -143,6 +168,63 @@ concept DeclaracionReactor {
   --> AgenteMEM agente
 }
 
+concept DeclaracionUnidadesDeGeneracion {
+  o UnidadDeGeneracion unidadDeGeneracion          // 1, 2, 3
+  o String tipoDeTurbina                           // 4
+  o String tipoDeCiclo                             // 5
+  o Integer capacidadNominalMW                     // 6 - MW
+  o Integer capacidadNominalMVA                    // 7 - MVA
+  o Integer capacidadEfectivaNeta                  // 8 - MVA
+  o Integer minimoTecnico                          // 9 - MW
+  o Integer factorDePotenciaNominal                // 10
+  o Integer capacidadAbsorcionDeReactivos          // 11 - MVARs
+  o Integer capacidadGeneracionDeReactivos         // 12 - MVARs
+  o String curvaDeCargabilidad                     // 13
+  o Integer factorDeConversion                     // 14 - MW/m^3/s
+  o Integer tensionNominal                         // 15 - kV
+  o Integer estatismo                              // 16 - %
+  o Banda bandaMuerta                              // 17 - mHz
+  o Integer inerciaGrupoTurbinaGenerador           // 18 - s
+  o Integer tDPrima                                // 19 - s
+  o Integer tDPrimaPrima                           // 20 - s
+  o Integer tQPrima                                // 21 - s
+  o Integer tQPrimaPrima                           // 22 - s
+  o Integer xD                                     // 23 - pu
+  o Integer xDPrima                                // 24 - pu
+  o Integer xDPrimaPrima                           // 25 - pu
+  o Integer xQ                                     // 26 - pu
+  o Integer xQPrima                                // 27 - pu
+  o Integer xQPrimaPrima                           // 28 - pu
+  o Integer rS                                     // 29 - pu
+  o Integer xPot                                   // 30 - pu
+  o Integer sG10                                   // 31 - pu
+  o Integer sG12                                   // 32 - pu
+  o Integer x2                                     // 33 - pu
+  o Integer r2                                     // 34 - pu
+  o Integer x0                                     // 35 - pu
+  o Integer r0                                     // 36 - pu
+  o Integer xE                                     // 37 - pu
+  o Integer rE                                     // 38 - pu
+  o String tipoDePolo                              // 39
+  o Integer xDSat                                  // 40 - pu
+  o Integer xDSatPrimaPrima                        // 41 - pu
+  o Integer tPrimaD0                               // 42 - s
+  o Integer tPrimaPrimaD0                          // 43 - s
+  o Integer tPrimaQ0                               // 44 - s
+  o String pSS                                     // 45
+  o String eXC                                     // 46
+  o String pCU                                     // 47
+  --> AgenteMEM agente
+}
+
+concept DeclaracionSvc {
+  o Svc scv                              // 1, 2
+  o Integer tensionNominal               // 3 - kV
+  o Integer maximaPotenciaInductiva      // 4 - MVAR
+  o Integer maximaPotenciaCapacitiva     // 5 - MVAR
+  o String unifilar                      // 6
+  --> AgenteMEM agente
+}
 
 //////////// Participantes ////////////
 
@@ -151,7 +233,7 @@ participant EntidadReguladora identified by idEntidadReguladora {
   o String nombre
 }
 
-abstract participant AgenteMEM identified by idAgenteMEM {
+participant AgenteMEM identified by idAgenteMEM {
   o String idAgenteMEM
   o String nombreEmpresa
   o String direccionEmpresa
@@ -160,13 +242,7 @@ abstract participant AgenteMEM identified by idAgenteMEM {
   o String emailEmpresa
   o String nombreEmpleado
   o String cargoEmpleado
-  o DateTime fechaEnvio
 }
-
-participant Comercializador extends AgenteMEM {}
-
-participant Generador extends AgenteMEM {}
-
 
 //////////// Transacciones ////////////
 
@@ -177,15 +253,25 @@ transaction PublicarDeclaracionLinea {
 
 transaction PublicarDeclaracionTransformador {
   o String idDeclaracionTransformador
-  o DeclaracionLinea declaracionTransformador
+  o DeclaracionTransformador declaracionTransformador
 }
 
 transaction PublicarDeclaracionCondensador {
   o String idDeclaracionCondensador
-  o DeclaracionLinea declaracionCondensador
+  o DeclaracionCondensador declaracionCondensador
 }
 
 transaction PublicarDeclaracionReactor {
   o String idDeclaracionReactor
-  o DeclaracionLinea declaracionReactor
+  o DeclaracionReactor declaracionReactor
+}
+
+transaction PublicarDeclaracionUnidadesDeGeneracion {
+  o String idDeclaracionUnidadesDeGeneracion
+  o DeclaracionUnidadesDeGeneracion declaracionUnidadesDeGeneracion
+}
+
+transaction PublicarDeclaracionSvc {
+  o String idDeclaracionSvc
+  o DeclaracionSvc declaracionSvc
 }
